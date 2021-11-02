@@ -76,5 +76,17 @@
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.etcd</groupId>
+            <artifactId>jetcd-core</artifactId>
+            <version>0.5.10</version>
+        </dependency>
+    
+      <dependency>
+        <groupId>org.apache.shardingsphere.elasticjob</groupId>
+        <artifactId>elasticjob-registry-center</artifactId>
+        <version>3.0.1</version>
+      </dependency>
     </dependencies>
 </project>

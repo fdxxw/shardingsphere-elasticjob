@@ -34,14 +34,18 @@ public final class JobRegistry {
     
     private static volatile JobRegistry instance;
     
+    // 作业调度控制器映射KEY为作业名，值为作业调度控制器
     private final Map<String, JobScheduleController> schedulerMap = new ConcurrentHashMap<>();
     
+    // 作业协调注册中心映射，KEY为作业名，值为协调注册中心
     private final Map<String, CoordinatorRegistryCenter> regCenterMap = new ConcurrentHashMap<>();
     
+    // 作业实例映射，KEY为作业名值为作业实例对象
     private final Map<String, JobInstance> jobInstanceMap = new ConcurrentHashMap<>();
     
+    // 作业的运行状态，true为正在运行
     private final Map<String, Boolean> jobRunningMap = new ConcurrentHashMap<>();
-    
+    // 作业分片总数映射，KEY为作业名，值为分片总数
     private final Map<String, Integer> currentShardingTotalCountMap = new ConcurrentHashMap<>();
     
     /**

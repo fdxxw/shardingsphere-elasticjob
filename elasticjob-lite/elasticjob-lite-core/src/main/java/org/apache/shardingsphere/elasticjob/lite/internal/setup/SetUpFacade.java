@@ -72,10 +72,37 @@ public final class SetUpFacade {
      * @param enabled enable job on startup
      */
     public void registerStartUpInfo(final boolean enabled) {
+        //开启所有监听器.  主节点、分片、作业运行、触发等节点状态变更
+        /**
+         * 监听器主要是用来订阅调度作业写入到Zookeeper上节点状态的变更，
+         * 其中包含了主节点，分片信息，作业运行信息，触发信息等节点状态的监听，
+         * 在分布式场景下如果有其他机器下的作节点状态发生了变更或者针对作业进行了操作，
+         * 当前进行订阅的进程节点可以及时感知到并及时做出合理的操作。
+         */
         listenerManager.startAllListeners();
+        //选举主节点
+        /**
+         * 这里主要说下主节点的作用，调度作业的执行是基于逻辑的分片来执行的不依赖于底层机器实例，
+         * 而每个机器进程的分片获取是需要主节点来进行分配的，
+         * 就像是有一群员工需要进行任务分配了，每个人都不想做任务，
+         * 或者都想要做更多的任务，每个人自己来选择执行任务数量，最终是无法形成一致的意见的，
+         * 这个时候就需要选出来一个领导，领导分配任务给员工，选主节点就类似于选领导一样。
+         */
         leaderService.electLeader();
+        //持久化作业服务器上线信息
+        /**
+         * 这里一共有两个存储机器IP信息的节点在Zookeeper上创建，一个是持久的servers子节点，
+         * 一个是临时的instances子节点，持久的servers子节点用来存储作业实例信息的状态比如禁用还是启用，
+         * 而临时的instances节点可以用来标示哪个机器的作业进程在运行，在线的进程与Zookeeper保持连接临时节点存在，
+         * 下线的进程则临时节点被自动移除。
+         */
         serverService.persistOnline(enabled);
+        //持久化作业运行实例上线相关信息
         instanceService.persistOnline();
+        //调解分布式作业不一致状态服务
+        /**
+         * 这一步主要做一些补偿操作开启一个定时任务检测，作业节点状态是否正常，来做一些调节操作，保证作业正常运行。
+         */
         if (!reconcileService.isRunning()) {
             reconcileService.startAsync();
         }

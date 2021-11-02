@@ -66,6 +66,12 @@
             <artifactId>elasticjob-tracing-rdb</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.etcd</groupId>
+            <artifactId>jetcd-core</artifactId>
+            <version>0.5.10</version>
+        </dependency>
         
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -93,6 +99,7 @@
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-test</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

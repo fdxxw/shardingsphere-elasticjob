@@ -79,6 +79,7 @@ public final class JobScheduler {
         Preconditions.checkArgument(null != elasticJob, "Elastic job cannot be null.");
         this.regCenter = regCenter;
         Collection<ElasticJobListener> jobListeners = getElasticJobListeners(jobConfig);
+        // 注册作业配置信息
         setUpFacade = new SetUpFacade(regCenter, jobConfig.getJobName(), jobListeners);
         String jobClassName = JobClassNameProviderFactory.getProvider().getJobClassName(elasticJob);
         this.jobConfig = setUpFacade.setUpJobConfiguration(jobClassName, jobConfig);
@@ -87,6 +88,7 @@ public final class JobScheduler {
         validateJobProperties();
         jobExecutor = new ElasticJobExecutor(elasticJob, this.jobConfig, jobFacade);
         setGuaranteeServiceForElasticJobListeners(regCenter, jobListeners);
+        //  注册启动信息
         jobScheduleController = createJobScheduleController();
     }
     

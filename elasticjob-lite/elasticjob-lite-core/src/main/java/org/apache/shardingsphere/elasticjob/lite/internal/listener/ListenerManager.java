@@ -73,7 +73,9 @@ public final class ListenerManager {
      * Start all listeners.
      */
     public void startAllListeners() {
+        // 主节点选举监听器
         electionListenerManager.start();
+        // 分片监听管理器
         shardingListenerManager.start();
         failoverListenerManager.start();
         monitorExecutionListenerManager.start();

@@ -37,8 +37,11 @@ public final class SchedulerFacade {
     
     public SchedulerFacade(final CoordinatorRegistryCenter regCenter, final String jobName) {
         this.jobName = jobName;
+        // 主节点信息
         leaderService = new LeaderService(regCenter, jobName);
+        // 分片信息
         shardingService = new ShardingService(regCenter, jobName);
+        // 
         executionService = new ExecutionService(regCenter, jobName);
     }
     
